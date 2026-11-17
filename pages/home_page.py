@@ -58,3 +58,8 @@ class HomePage(BasePage):
 
     def prices(self) -> list[float]:
         return [float(p.replace("$", "")) for p in self.product_prices.all_inner_texts()]
+
+    def filter_by_category(self, category_name: str):
+        with self.page.expect_response(lambda r: PRODUCT_LIST.search(r.url) is not None):
+            self.page.get_by_label(category_name).check()
+        return self
